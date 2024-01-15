@@ -5,6 +5,7 @@ from .utils import account_activation_token
 from django.utils.encoding import force_str
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -13,6 +14,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib import auth
+
 
 # Create your views here.
 
@@ -146,14 +149,37 @@ class VerificationView(View):
 class LoginView(View):
     def get(self,request):
         return render(request,'authentication/login.html')
-          
-          
-            
-            
-       
+    
+    
+    
         
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+                    
+        if username and password:
+                user = auth.authenticate(username=username, password=password)
         
-        
-        
-        
-        
+                if user:
+                    if user.is_active:
+                        auth.login(request, user)
+                        messages.success(request, 'Welcome, ' + user.username + ' You are now logged in')
+                        return redirect('index')
+                    else:
+                        messages.error(request, 'Account is not active, please check your email')
+                        return render(request, 'authentication/login.html')
+                else:
+                    messages.error(request, 'User not exist')
+        messages.error(request,'Please fill all details ')
+    
+        return render(request, 'authentication/login.html')
+
+
+class LogoutView(View):
+    def post(self,request):
+        auth.logout(request)
+        messages.success(request,'You have been logged out')
+        return redirect('login')
+    
+
+  
