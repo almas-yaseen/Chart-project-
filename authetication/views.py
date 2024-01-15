@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
 from django.views import View
 import json
-from .utils import token_generator
+from .utils import account_activation_token
+from django.utils.encoding import force_str
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
@@ -84,7 +85,7 @@ class RegistrationView(View):
                 uidb64 =  urlsafe_base64_encode(force_bytes(user.pk))
                 
                 domain = get_current_site(request).domain
-                link = reverse('activate',kwargs={'uidb64':uidb64,'token':token_generator.make_token(user)})
+                link = reverse('activate',kwargs={'uidb64':uidb64,'token':account_activation_token.make_token(user)})
                 
                 activate_url = 'http://' +domain+link
                 
@@ -111,7 +112,41 @@ class RegistrationView(View):
 
 class VerificationView(View):
     def get(self,request,uidb64,token):
+        try:
+            id = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=id)
+            
+            if not  account_activation_token.check_token(user,token):
+                return redirect('login' + '?message='+'User already activated')
+                
+        
+            
+            if user.is_active:
+                return redirect('login')
+            user.is_active = True 
+            user.save()
+            messages.success(request,'Account activated successfully')
+            return redirect('login')
+            
+            
+            
+            
+        except Exception as e:
+            pass
+        
         return redirect('login')
+            
+            
+    
+    
+
+
+
+
+class LoginView(View):
+    def get(self,request):
+        return render(request,'authentication/login.html')
+          
           
             
             
