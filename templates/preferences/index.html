@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content  %}
+<form action="{% url 'preference' %}" method="post">
+    {% csrf_token %}
+
+<div class="container mt-3">
+
+    <div class="input-group">
+        <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+          <option selected>Choose...</option>
+          {% for currency in currency_data %}
+
+          <option selected>{{currency.name}} -{{currency.value}}</option>
+          {% endfor %}
+         
+        </select>
+        <div class="input-group-append">
+          <input class="btn btn-outline-secondary" type="submit" type="submit" value="Save">
+        </div>
+      </div>
+
+    </form>
+
+</div>
+
+
+
+<hr/>
+
+
+
+{% endblock content  %}
+
+
+
+

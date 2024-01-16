@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('products.urls')),
     path('authentication/',include('authetication.urls')),
+    path('preference/',include('userpreference.urls')),
+  
 ]
