@@ -17,12 +17,57 @@
 <div class="col-md-2">
 
 <a href="{% url 'add_expense' %}" class="btn btn-primary">Add Expense</a>
+</div>
+</div>
+<div class="container">
+  {% include "partials/messages.html" %}
+  {% if expense.count  %}
+
+
+
+
+<table class="table table-stripped table-hover">
+
+
+<thead>
+
+  <tr>
+    <th>Amount(CURRECNY)</th>
+    <th>Category</th>
+    <th>Description</th>
+    <th>Date</th>
+    <th>Date</th>
+  </tr>
+</thead>
+
+<tbody>
+{% for expenses in expense %}
+
+  <tr>
+    <td>{{expenses.amount}}</td>
+    <td>{{expenses.category}}</td>
+    <td>{{expenses.description}}</td>
+    <td>{{expenses.date}}</td>
+    <td><a href="{% url 'expense_edit' expenses.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+  </tr>
+
+  {% endfor %}
+</tbody>
+
+
+</table>
+{% endif %}
+
 
 </div>
 
-</div>
+
+
+
+
+
 </div>
 
 
-{% include "partials/messages.html" %}
+
 {% endblock content  %}
