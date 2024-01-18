@@ -33,9 +33,10 @@ def index(request):
         if exists:
             user_preference.currency = currency
             user_preference.save()
+          
         
         else:
             UserPreference.objects.create(user=request.user,currency=currency)
-            messages.success(request,'Changes saved')
+        messages.success(request,'Changes saved')
         return render(request, 'preferences/index.html', {'currency_data': currency_data,'user_preference':user_preference})
         
