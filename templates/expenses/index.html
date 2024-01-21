@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content  %}
 <div class="container mt-4">
 
@@ -22,6 +22,22 @@
 <div class="container">
   {% include "partials/messages.html" %}
   {% if expense.count  %}
+
+<div class="row">
+  <div class="col-md-8"></div>
+  <div class="col-md-4">
+
+    <div class="form-group">
+      <input type="text" id="searchfield" class="form-control" placeholder="Search">
+
+
+      </div>
+
+
+    </div>
+ 
+</div>
+</div>
 
 
 
@@ -67,6 +83,15 @@
 
 
 </div>
+
+
+
+<script src="{% static 'js/searchexpenses.js' %}">
+
+
+
+
+</script>
 
 
 

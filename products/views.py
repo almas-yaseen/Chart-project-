@@ -3,9 +3,42 @@ from django.contrib.auth.decorators import login_required
 from .import views
 from django.contrib import messages
 from .models import *
+import json 
 from django.views.decorators.cache import never_cache
+from django.http import JsonResponse
+
 
 # Create your views here.
+def search_expenses(request):
+    try:
+        if request.method == "POST":
+            search_str = json.loads(request.body).get('searchText')
+            
+            expenses = Expense.objects.filter(
+                amount__istartswith=search_str,
+                owner=request.user
+            ) | Expense.objects.filter(
+                date__istartswith=search_str,
+                owner=request.user
+            ) | Expense.objects.filter(
+                description__icontains=search_str,
+                owner=request.user
+            ) | Expense.objects.filter(
+                category__icontains=search_str,
+                owner=request.user
+            )
+            
+            data = expenses.values()
+            return JsonResponse(list(data), safe=False)
+        
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+
 
 @login_required(login_url='/authentication/login')
 @never_cache
