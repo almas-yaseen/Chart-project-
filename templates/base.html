@@ -32,10 +32,25 @@
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">TrulyExpenses</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <ul class="navbar-nav px-3">
+  
+
+  <ul class="navbar-nav px-3" style="display:flex;flex-direction:row;align-items:center">
     <li class="nav-item text-nowrap">
-      <form action="{% url 'logout' %}" method="post">
+      <span class="nav-link" href="">
+        {{request.user.username}}
+      </a>
+    </li>
+  
+
+
+
+
+
+
+
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap mt-3 ml-2">
+      <form action="nav-link" method="post">
 
 {% csrf_token %}
         <input class="text text-capitalize" type="submit" value="Signout">
