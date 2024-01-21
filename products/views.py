@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .import views
 from django.contrib import messages
 from .models import *
+from django.core.paginator import Paginator
 import json 
 from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
@@ -45,9 +46,13 @@ def search_expenses(request):
 def index(request):
     categories = Category.objects.all()
     expense = Expense.objects.filter(owner=request.user)
+    paginator = Paginator(expense,2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         'categories':categories,
         'expense':expense,
+        'page_obj':page_obj,
     }
     return render(request,'expenses/index.html',context)
 
