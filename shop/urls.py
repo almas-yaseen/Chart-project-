@@ -22,5 +22,6 @@ urlpatterns = [
     path('',include('products.urls')),
     path('authentication/',include('authetication.urls')),
     path('preference/',include('userpreference.urls')),
+    path('income/',include('userincome.urls')),
   
 ]

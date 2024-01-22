@@ -8,6 +8,7 @@ urlpatterns = [
     path('delete_expense/<int:id>',views.delete_expense,name='delete_expense'),
     path('add_expense',views.add_expense,name='add_expense'),
      path('search-expenses', csrf_exempt(views.search_expenses),name="search_expenses"),
+     
    
 
     
